@@ -1,0 +1,746 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark light">
+  <meta name="description" content="LoanLens – State-of-the-Art Machine Learning Loan Approval Intelligence & Explainable AI Underwriting Studio.">
+  <title>LoanLens · AI Loan Approval & Lending Intelligence</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <script>
+    // Prevent theme flash of unstyled content (FOUC)
+    (() => {
+      const savedTheme = localStorage.getItem("loanlens-theme") || (window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark");
+      document.documentElement.setAttribute("data-theme", savedTheme);
+    })();
+  </script>
+</head>
+<body>
+
+<!-- Ambient Radiant Glow Orbs -->
+<div class="ambient-glow" aria-hidden="true">
+  <div class="ambient-orb ambient-orb-1"></div>
+  <div class="ambient-orb ambient-orb-2"></div>
+  <div class="ambient-orb ambient-orb-3"></div>
+</div>
+
+<!-- Sticky Glass Header -->
+<header class="top-header">
+  <div class="header-inner">
+    <div class="brand-wrapper" id="brandNav">
+      <div class="brand-logo">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+        </svg>
+      </div>
+      <div class="brand-info">
+        <span class="brand-name">LoanLens</span>
+        <span class="brand-tag">AI Underwriting Studio</span>
+      </div>
+    </div>
+
+    <!-- Navigation Tabs -->
+    <nav class="nav-tabs" role="tablist" aria-label="Main Navigation">
+      <button class="nav-tab active" data-tab="check" role="tab" id="tabBtnCheck" aria-selected="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9 11l3 3L22 4"/>
+          <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
+        </svg>
+        <span>Check Eligibility</span>
+      </button>
+      <button class="nav-tab" data-tab="dash" role="tab" id="tabBtnDash" aria-selected="false">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="3" width="18" height="18" rx="2"/>
+          <path d="M3 9h18M9 21V9"/>
+        </svg>
+        <span>Dashboard</span>
+      </button>
+      <button class="nav-tab" data-tab="lab" role="tab" id="tabBtnLab" aria-selected="false">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M18 20V10M12 20V4M6 20v-6"/>
+        </svg>
+        <span>Model Lab</span>
+      </button>
+      <button class="nav-tab" data-tab="about" role="tab" id="tabBtnAbout" aria-selected="false">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"/>
+          <line x1="12" y1="16" x2="12" y2="12"/>
+          <line x1="12" y1="8" x2="12.01" y2="8"/>
+        </svg>
+        <span>About &amp; SDG 8</span>
+      </button>
+    </nav>
+
+    <!-- Header Actions -->
+    <div class="header-actions">
+      <div class="badge-model-status" title="Active Champion Machine Learning Algorithm">
+        <span class="pulse-dot"></span>
+        <span id="headerBestModel">{{ best }} (90.5%)</span>
+      </div>
+
+      <button class="icon-btn" id="sfxToggle" title="Toggle Sound Feedback" aria-label="Toggle Sound">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" id="sfxIcon">
+          <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+          <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/>
+        </svg>
+      </button>
+
+      <button class="icon-btn" id="themeToggle" title="Toggle Theme (Dark / Light)" aria-label="Toggle Theme">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" id="themeIcon">
+          <circle cx="12" cy="12" r="5"/>
+          <line x1="12" y1="1" x2="12" y2="3"/>
+          <line x1="12" y1="21" x2="12" y2="23"/>
+          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+          <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+          <line x1="1" y1="12" x2="3" y2="12"/>
+          <line x1="21" y1="12" x2="23" y2="12"/>
+          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+          <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main>
+<!-- ==========================================================================
+     TAB 1: CHECK ELIGIBILITY
+     ========================================================================== -->
+<section id="tab-check" class="panel active" role="tabpanel" aria-labelledby="tabBtnCheck">
+  <!-- Hero Section -->
+  <div class="hero-header">
+    <div class="hero-badge">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+      <span>Instant AI Underwriting</span>
+    </div>
+    <h1 class="hero-title">Will the bank approve <span class="text-gradient">this loan?</span></h1>
+    <p class="hero-subtitle">Evaluate loan approval probability across 5 calibrated ML models. Get real-time debt-to-income diagnostics, explainable feature impacts, and optimization recommendations.</p>
+  </div>
+
+  <!-- Interactive Archetype Preset Chips -->
+  <div class="presets-section">
+    <div class="presets-label">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      <span>Quick 1-Click Demo Profiles</span>
+    </div>
+    <div class="presets-grid">
+      <button type="button" class="preset-chip active" data-preset="prime">
+        <div class="preset-icon">👨‍💼</div>
+        <div class="preset-meta">
+          <b>Prime Salaried</b>
+          <small>₹1.2L Income · 760 CIBIL · Home</small>
+        </div>
+      </button>
+      <button type="button" class="preset-chip" data-preset="business">
+        <div class="preset-icon">💼</div>
+        <div class="preset-meta">
+          <b>Business Owner</b>
+          <small>₹2.0L Income · 730 CIBIL · Biz</small>
+        </div>
+      </button>
+      <button type="button" class="preset-chip" data-preset="graduate">
+        <div class="preset-icon">🎓</div>
+        <div class="preset-meta">
+          <b>Fresh Graduate</b>
+          <small>₹45k Income · 680 CIBIL · Edu</small>
+        </div>
+      </button>
+      <button type="button" class="preset-chip" data-preset="risk">
+        <div class="preset-icon">⚠️</div>
+        <div class="preset-meta">
+          <b>High-DTI Risk</b>
+          <small>₹60k Income · High EMI · 610</small>
+        </div>
+      </button>
+    </div>
+  </div>
+
+  <!-- Studio Grid -->
+  <div class="studio-grid">
+    <!-- Form Card -->
+    <form id="form" class="glass-card form-card" autocomplete="off">
+      <!-- Section 1: Demographics -->
+      <fieldset class="fieldset-group">
+        <div class="fieldset-header">
+          <div class="fieldset-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          </div>
+          <h3>Applicant Background</h3>
+        </div>
+
+        <div class="input-row-2">
+          <div class="input-group">
+            <label for="fAge">Age (Years)</label>
+            <input type="number" id="fAge" name="age" value="32" min="18" max="75" required class="text-input">
+          </div>
+          <div class="input-group">
+            <label for="fDep">Dependents</label>
+            <input type="number" id="fDep" name="dependents" value="1" min="0" max="10" required class="text-input">
+          </div>
+        </div>
+
+        <div class="seg-control-wrapper">
+          <div class="seg-title">Education Level</div>
+          <div class="seg-group seg" data-name="education">
+            <button type="button" class="seg-btn on" data-v="Graduate">Graduate</button>
+            <button type="button" class="seg-btn" data-v="Not Graduate">Non-Graduate</button>
+          </div>
+        </div>
+
+        <div class="seg-control-wrapper">
+          <div class="seg-title">Employment Classification</div>
+          <div class="seg-group seg" data-name="employment">
+            <button type="button" class="seg-btn on" data-v="Salaried">Salaried</button>
+            <button type="button" class="seg-btn" data-v="Self-Employed">Self-Employed</button>
+            <button type="button" class="seg-btn" data-v="Business Owner">Business Owner</button>
+          </div>
+        </div>
+
+        <div class="seg-control-wrapper">
+          <div class="seg-title">Property Location</div>
+          <div class="seg-group seg" data-name="property_area">
+            <button type="button" class="seg-btn on" data-v="Urban">Urban</button>
+            <button type="button" class="seg-btn" data-v="Semiurban">Semi-Urban</button>
+            <button type="button" class="seg-btn" data-v="Rural">Rural</button>
+          </div>
+        </div>
+      </fieldset>
+
+      <!-- Section 2: Income & Liabilities -->
+      <fieldset class="fieldset-group">
+        <div class="fieldset-header">
+          <div class="fieldset-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+          </div>
+          <h3>Income &amp; Repayment Capacity</h3>
+        </div>
+
+        <div class="input-row-2">
+          <div class="input-group">
+            <label for="fAppInc">Your Monthly Income</label>
+            <div class="input-wrapper">
+              <span class="input-prefix">₹</span>
+              <input type="number" id="fAppInc" name="applicant_income" value="85000" min="0" step="1000" required class="text-input has-prefix">
+            </div>
+          </div>
+          <div class="input-group">
+            <label for="fCoAppInc">Co-Applicant Monthly Income</label>
+            <div class="input-wrapper">
+              <span class="input-prefix">₹</span>
+              <input type="number" id="fCoAppInc" name="coapplicant_income" value="35000" min="0" step="1000" required class="text-input has-prefix">
+            </div>
+          </div>
+        </div>
+
+        <div class="input-group">
+          <label for="fEmi">Existing Monthly EMIs Already Paying</label>
+          <div class="input-wrapper">
+            <span class="input-prefix">₹</span>
+            <input type="number" id="fEmi" name="existing_emi" value="8000" min="0" step="500" required class="text-input has-prefix">
+          </div>
+        </div>
+
+        <div class="slider-group">
+          <div class="slider-header-row">
+            <span class="slider-label-title">CIBIL / Credit Score</span>
+            <div>
+              <span id="csBand" class="credit-band-pill excellent">Excellent</span>
+              <output id="csOut" class="slider-val-badge">760</output>
+            </div>
+          </div>
+          <div class="range-track-wrap">
+            <input type="range" name="credit_score" min="300" max="900" value="760">
+          </div>
+          <div class="scale-ticks">
+            <span>300 (Poor)</span>
+            <span>650 (Fair)</span>
+            <span>750 (Good)</span>
+            <span>900 (Superb)</span>
+          </div>
+        </div>
+      </fieldset>
+
+      <!-- Section 3: Loan Parameters -->
+      <fieldset class="fieldset-group">
+        <div class="fieldset-header">
+          <div class="fieldset-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+          </div>
+          <h3>Requested Loan Facility</h3>
+        </div>
+
+        <div class="seg-control-wrapper">
+          <div class="seg-title">Loan Purpose</div>
+          <div class="seg-group seg" data-name="loan_purpose">
+            <button type="button" class="seg-btn on" data-v="Home">Home</button>
+            <button type="button" class="seg-btn" data-v="Business">Business</button>
+            <button type="button" class="seg-btn" data-v="Education">Education</button>
+            <button type="button" class="seg-btn" data-v="Personal">Personal</button>
+          </div>
+        </div>
+
+        <div class="slider-group">
+          <div class="slider-header-row">
+            <span class="slider-label-title">Requested Principal Amount</span>
+            <output id="laOut" class="slider-val-badge">25 Lakh</output>
+          </div>
+          <div class="range-track-wrap">
+            <input type="range" name="loan_amount_lakh" min="1" max="150" step="0.5" value="25">
+          </div>
+          <div class="scale-ticks">
+            <span>₹1 Lakh</span>
+            <span>₹50 Lakh</span>
+            <span>₹1 Crore</span>
+            <span>₹1.5 Crore</span>
+          </div>
+        </div>
+
+        <div class="slider-group">
+          <div class="slider-header-row">
+            <span class="slider-label-title">Tenure Duration</span>
+            <output id="ltOut" class="slider-val-badge">15 Years</output>
+          </div>
+          <div class="range-track-wrap">
+            <input type="range" name="loan_term_months" min="12" max="360" step="12" value="180">
+          </div>
+          <div class="scale-ticks">
+            <span>1 Year</span>
+            <span>10 Years</span>
+            <span>20 Years</span>
+            <span>30 Years</span>
+          </div>
+        </div>
+      </fieldset>
+
+      <!-- Live Pre-Flight Health HUD -->
+      <div class="live-health-hud" id="preflightHud">
+        <div class="hud-item">
+          <small>Est. New EMI</small>
+          <b id="liveEmi">₹26,115/mo</b>
+        </div>
+        <div class="hud-item">
+          <small>Live DTI Ratio</small>
+          <div>
+            <b id="liveDti">28.4%</b>
+            <span id="liveDtiBadge" class="dti-pill safe">Safe</span>
+          </div>
+        </div>
+        <div class="hud-item">
+          <small>Affordability</small>
+          <b id="liveAffordability" style="color:var(--good)">High</b>
+        </div>
+      </div>
+
+      <!-- Action Row -->
+      <div class="form-actions">
+        <div class="model-select-wrap">
+          <label for="model">Inference Model</label>
+          <select id="model" class="select-input">
+            {% for m in models %}
+            <option value="{{ m }}" {{ 'selected' if m == best }}>{{ m }}{{ ' 🏆 (best)' if m == best }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <button class="btn-predict go" type="submit" id="btnSubmit">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+          <span>Run AI Assessment</span>
+        </button>
+      </div>
+      <p class="form-error" id="err" role="alert"></p>
+    </form>
+
+    <!-- Results Arena Card -->
+    <aside class="glass-card result-card" id="resultCard">
+      <!-- Empty State -->
+      <div id="empty" class="empty-state-wrap">
+        <div class="empty-illustration">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+            <polyline points="22 4 12 14.01 9 11.01"/>
+          </svg>
+        </div>
+        <h4>Ready for Instant Assessment</h4>
+        <p>Adjust the financial parameters and click <b>Run AI Assessment</b> to see the machine-learning verdict, risk breakdown, and recommendations.</p>
+      </div>
+
+      <!-- Dynamic Result Output -->
+      <div id="out" hidden>
+        <!-- Circular Neon Gauge -->
+        <div class="gauge-stage">
+          <svg viewBox="0 0 300 180" class="gauge-svg" aria-hidden="true">
+            <defs>
+              <linearGradient id="gaugeGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stop-color="#F43F5E"/>
+                <stop offset="45%" stop-color="#F59E0B"/>
+                <stop offset="80%" stop-color="#10B981"/>
+                <stop offset="100%" stop-color="#06B6D4"/>
+              </linearGradient>
+              <filter id="gaugeGlow" x="-20%" y="-20%" width="140%" height="140%">
+                <feGaussianBlur stdDeviation="4" result="blur"/>
+                <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+              </filter>
+            </defs>
+            <!-- Background Arc -->
+            <path d="M 35 150 A 115 115 0 0 1 265 150" fill="none" stroke="var(--border-medium)" stroke-width="20" stroke-linecap="round"/>
+            <!-- Active Fill Arc -->
+            <path id="gaugeArc" d="M 35 150 A 115 115 0 0 1 265 150" fill="none" stroke="url(#gaugeGradient)" stroke-width="20" stroke-linecap="round"
+                  stroke-dasharray="361" stroke-dashoffset="361" filter="url(#gaugeGlow)"/>
+            <!-- Center Needle Pointer -->
+            <g id="gaugeNeedle" transform="rotate(-90 150 150)">
+              <path d="M 150 150 L 150 48" stroke="var(--text-primary)" stroke-width="4" stroke-linecap="round"/>
+              <circle cx="150" cy="150" r="10" fill="var(--primary)" stroke="var(--bg-card-solid)" stroke-width="3"/>
+            </g>
+          </svg>
+          <div class="gauge-center-readout">
+            <div class="gauge-pct-val" id="pct">0%</div>
+            <div class="gauge-pct-sub" id="pctLabel">Approval Chance</div>
+          </div>
+        </div>
+
+        <!-- Verdict Banner -->
+        <div class="verdict-banner" id="verdict">
+          <span>–</span>
+        </div>
+
+        <!-- KPI Ribbons -->
+        <div class="result-kpis-grid">
+          <div class="result-kpi-box">
+            <small>Monthly EMI</small>
+            <b id="kEmi" class="mono">–</b>
+          </div>
+          <div class="result-kpi-box">
+            <small>Total DTI</small>
+            <b id="kDti" class="mono">–</b>
+          </div>
+          <div class="result-kpi-box">
+            <small>Risk Grade</small>
+            <b id="kRisk">–</b>
+          </div>
+        </div>
+
+        <!-- Multi-Model Consensus Indicator -->
+        <div class="consensus-card" id="consensusBox">
+          <div class="consensus-header">
+            <span>Multi-Model Consensus</span>
+            <span id="consensusScore">5 / 5 Approved</span>
+          </div>
+          <div class="consensus-models-pills" id="consensusPills">
+            <!-- Populated via JS -->
+          </div>
+        </div>
+
+        <!-- Explainable AI Factors Waterfall -->
+        <div class="section-subhead">
+          <span>Key Influencing Drivers</span>
+          <small class="text-muted">Relative % Shift</small>
+        </div>
+        <ul class="factors-list" id="factors"></ul>
+
+        <!-- Actionable AI Improvement Playbook -->
+        <div class="section-subhead">
+          <span>Smart Action Plan</span>
+        </div>
+        <ul class="tips-list" id="tips"></ul>
+
+        <!-- What-If Quick Simulator -->
+        <div class="whatif-box">
+          <div class="whatif-head">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 14 14"/></svg>
+            <span>Live What-If Simulator</span>
+          </div>
+          <p style="font-size:0.8rem; margin-bottom:0.6rem; color:var(--text-secondary);">Test adjusting tenure or co-applicant to observe immediate odds improvement.</p>
+          <button type="button" class="btn-secondary" id="btnOptimize">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20v-6M6 20V10M18 20V4"/></svg>
+            <span>Auto-Optimize for Maximum Odds</span>
+          </button>
+        </div>
+
+        <!-- Print Pre-Approval Slip -->
+        <button type="button" class="btn-secondary" id="btnPrintReport">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+          <span>Print Pre-Approval Certificate</span>
+        </button>
+
+        <p class="fine" id="usedModel" style="margin-top:0.8rem; font-size:0.75rem; color:var(--text-muted);"></p>
+      </div>
+    </aside>
+  </div>
+</section>
+
+<!-- ==========================================================================
+     TAB 2: LENDING DASHBOARD
+     ========================================================================== -->
+<section id="tab-dash" class="panel" role="tabpanel" aria-labelledby="tabBtnDash">
+  <div class="hero-header">
+    <div class="hero-badge">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+      <span>Macro Lending Analytics</span>
+    </div>
+    <h1 class="hero-title">Portfolio &amp; <span class="text-gradient">Lending Intelligence</span></h1>
+    <p class="hero-subtitle">Interactive analysis across 3,000 credit records, socioeconomic demographic fairness, ROC discrimination benchmarks, and live prediction logs.</p>
+  </div>
+
+  <!-- Interactive Filter Bar -->
+  <div class="glass-card dashboard-filter-bar">
+    <div class="filter-item">
+      <label for="fPurpose">Loan Purpose</label>
+      <select id="fPurpose" class="select-input"></select>
+    </div>
+    <div class="filter-item">
+      <label for="fEmployment">Employment Status</label>
+      <select id="fEmployment" class="select-input"></select>
+    </div>
+    <div class="filter-item">
+      <label for="fArea">Property Area</label>
+      <select id="fArea" class="select-input"></select>
+    </div>
+    <button type="button" class="btn-ghost" id="fReset">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+      <span>Reset Filters</span>
+    </button>
+  </div>
+
+  <div id="dEmpty" class="glass-card empty-card" hidden>No applicants match these filters. Reset the filters to view all dataset cohorts.</div>
+
+  <div id="dBody">
+    <!-- Executive KPI Deck -->
+    <div class="kpi-deck" id="dKpis"></div>
+
+    <!-- 6 Interactive Visualizations -->
+    <div class="charts-grid-2x3">
+      <div class="glass-card">
+        <div class="chart-card-head">
+          <h3>Approval Rate by Credit Score</h3>
+          <p class="text-muted">Approval propensity across credit score tiers (Amber = Weakest cohort)</p>
+        </div>
+        <div class="chart-container"><canvas id="cCredit"></canvas></div>
+      </div>
+
+      <div class="glass-card">
+        <div class="chart-card-head">
+          <h3>Approval Rate by Employment</h3>
+          <p class="text-muted">Assessing parity across Salaried, Self-Employed, and Business Owners</p>
+        </div>
+        <div class="chart-container"><canvas id="cEmp"></canvas></div>
+      </div>
+
+      <div class="glass-card">
+        <div class="chart-card-head">
+          <h3>Approval Rate by Loan Purpose</h3>
+          <p class="text-muted">Financial inclusion tracking (Home, Education, Business, Personal)</p>
+        </div>
+        <div class="chart-container"><canvas id="cPurpose"></canvas></div>
+      </div>
+
+      <div class="glass-card">
+        <div class="chart-card-head">
+          <h3>Approval Rate by Property Area</h3>
+          <p class="text-muted">Geographical distribution fairness across Urban, Semi-Urban, and Rural</p>
+        </div>
+        <div class="chart-container"><canvas id="cArea"></canvas></div>
+      </div>
+
+      <div class="glass-card">
+        <div class="chart-card-head">
+          <h3>Income Distribution &amp; Outcomes</h3>
+          <p class="text-muted">Stacked volume of approved vs rejected applications by income tier</p>
+        </div>
+        <div class="chart-container"><canvas id="cIncome"></canvas></div>
+      </div>
+
+      <div class="glass-card">
+        <div class="chart-card-head">
+          <h3>Overall Portfolio Outcome</h3>
+          <p class="text-muted">Proportion of approved vs rejected applications in current filter</p>
+        </div>
+        <div class="chart-container"><canvas id="cStatus"></canvas></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ROC Curve Benchmark -->
+  <div class="glass-card" style="margin-bottom: 1.75rem;">
+    <div class="chart-card-head">
+      <h3>Receiver Operating Characteristic (ROC) Multi-Model Curves</h3>
+      <p class="text-muted">Evaluation of sensitivity vs specificity across all 5 algorithms. Closer to top-left represents superior discrimination power.</p>
+    </div>
+    <div class="chart-container tall"><canvas id="cRoc"></canvas></div>
+  </div>
+
+  <!-- Prediction History Audit Table -->
+  <div class="glass-card">
+    <div class="history-card-header">
+      <div>
+        <h3>Prediction Audit Ledger</h3>
+        <p class="text-muted" id="hSummary" style="font-size:0.85rem; margin-top:0.2rem;"></p>
+      </div>
+      <div style="display:flex; gap:0.6rem;">
+        <button type="button" class="btn-ghost" id="hExport">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          <span>Export CSV</span>
+        </button>
+        <button type="button" class="btn-ghost" id="hClear">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+          <span>Clear History</span>
+        </button>
+      </div>
+    </div>
+    <div class="table-responsive-box">
+      <table id="hTable" class="modern-table"></table>
+    </div>
+  </div>
+</section>
+
+<!-- ==========================================================================
+     TAB 3: MODEL LAB & DIAGNOSTICS
+     ========================================================================== -->
+<section id="tab-lab" class="panel" role="tabpanel" aria-labelledby="tabBtnLab">
+  <div class="hero-header">
+    <div class="hero-badge">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 20V10M12 20V4M6 20v-6"/></svg>
+      <span>Algorithm Benchmark Suite</span>
+    </div>
+    <h1 class="hero-title">Model Diagnostics &amp; <span class="text-gradient">Performance Lab</span></h1>
+    <p class="hero-subtitle">Comprehensive benchmarking of 5 machine learning models trained on identical train-test splits with 5-fold cross-validation.</p>
+  </div>
+
+  <!-- Global Dataset Stats -->
+  <div class="lab-stats-deck" id="dsStats"></div>
+
+  <!-- 2-Column Lab Grid -->
+  <div class="lab-columns-2">
+    <div class="glass-card">
+      <div class="chart-card-head">
+        <h3>Model Accuracy &amp; F1 Comparison</h3>
+        <p class="text-muted">Benchmarking classification precision and harmonic balance</p>
+      </div>
+      <div id="bars"></div>
+    </div>
+
+    <div class="glass-card">
+      <div class="chart-card-head">
+        <h3>Global Feature Importance</h3>
+        <p class="text-muted">Gini impurity feature contributions derived from the Random Forest ensemble</p>
+      </div>
+      <div id="imp"></div>
+    </div>
+  </div>
+
+  <!-- Full Metric Matrix Table -->
+  <div class="glass-card" style="margin-bottom: 1.75rem;">
+    <div class="chart-card-head">
+      <h3>Comprehensive Evaluation Metrics Matrix</h3>
+      <p class="text-muted">Rigorous test-set performance metrics across all candidates</p>
+    </div>
+    <div class="table-responsive-box">
+      <table id="tbl" class="modern-table"></table>
+    </div>
+  </div>
+
+  <!-- Interactive Confusion Matrix -->
+  <div class="glass-card">
+    <div class="chart-card-head" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1rem;">
+      <div>
+        <h3>Interactive Confusion Matrix</h3>
+        <p class="text-muted">Class-level separation between True Defaults and Approved Solvents</p>
+      </div>
+      <div style="min-width: 220px;">
+        <select id="cmModel" class="select-input"></select>
+      </div>
+    </div>
+    <div class="confusion-matrix-grid" id="cm"></div>
+  </div>
+</section>
+
+<!-- ==========================================================================
+     TAB 4: ABOUT & SDG 8 IMPACT
+     ========================================================================== -->
+<section id="tab-about" class="panel" role="tabpanel" aria-labelledby="tabBtnAbout">
+  <div class="hero-header">
+    <div class="hero-badge">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+      <span>Mission &amp; Architecture</span>
+    </div>
+    <h1 class="hero-title">About LoanLens &amp; <span class="text-gradient">SDG 8 Impact</span></h1>
+    <p class="hero-subtitle">Machine Learning applied towards transparent, equitable credit scoring and financial empowerment aligned with the UN Sustainable Development Goals.</p>
+  </div>
+
+  <div class="about-grid">
+    <!-- SDG 8 Banner Card -->
+    <div class="glass-card sdg8-banner-card">
+      <div class="sdg8-symbol">8</div>
+      <div class="sdg8-content">
+        <h2>UN SDG 8: Decent Work &amp; Economic Growth</h2>
+        <p>Goal 8.10 explicitly aims to <i>"Strengthen the capacity of domestic financial institutions to encourage and expand access to banking, insurance and financial services for all."</i></p>
+        <ul class="sdg8-points">
+          <li><b>Expanding Credit Access:</b> Automated, low-latency credit assessments remove bureaucratic barriers for small businesses and first-time borrowers.</li>
+          <li><b>Objective Solvency Scoring:</b> Replacing arbitrary manual discretion with transparent, mathematical risk models.</li>
+          <li><b>Financial Literacy Feedback:</b> Generating explainable "Why?" reasons and actionable steps for rejected applicants to qualify in the future.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Pipeline Architecture -->
+    <div class="glass-card">
+      <h3>End-to-End System Architecture</h3>
+      <p class="text-muted">How LoanLens transforms raw applicant parameters into actionable explainable underwriting decisions:</p>
+      <div class="pipeline-flow">
+        <div class="pipeline-step">
+          <div class="pipeline-step-num">1</div>
+          <h4>Data Ingestion</h4>
+          <p class="text-muted">3,000 synthesized credit profiles with multi-tier income, debt, and credit history.</p>
+        </div>
+        <div class="pipeline-step">
+          <div class="pipeline-step-num">2</div>
+          <h4>Feature Engineering</h4>
+          <p class="text-muted">Synthesis of Total Income, Estimated EMI, Debt-to-Income (DTI), and Loan-to-Income (LTI).</p>
+        </div>
+        <div class="pipeline-step">
+          <div class="pipeline-step-num">3</div>
+          <h4>Data Preprocessing</h4>
+          <p class="text-muted">Robust median imputations, StandardScaler normalization, and One-Hot encoding.</p>
+        </div>
+        <div class="pipeline-step">
+          <div class="pipeline-step-num">4</div>
+          <h4>Multi-Model Training</h4>
+          <p class="text-muted">5 algorithms: Logistic Regression, KNN, Decision Tree, Random Forest, Gradient Boosting.</p>
+        </div>
+        <div class="pipeline-step">
+          <div class="pipeline-step-num">5</div>
+          <h4>Explainable AI (XAI)</h4>
+          <p class="text-muted">Model-agnostic marginal delta simulation quantifying exact feature impacts.</p>
+        </div>
+        <div class="pipeline-step">
+          <div class="pipeline-step-num">6</div>
+          <h4>Real-Time Serving</h4>
+          <p class="text-muted">Flask microservice providing low-latency REST endpoints to this interactive UI.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Fairness & Ethical AI -->
+    <div class="glass-card">
+      <h3>Ethical AI &amp; Algorithmic Fairness Guarantee</h3>
+      <p style="line-height:1.7; color:var(--text-secondary);">
+        In adherence to ethical AI governance and anti-discrimination standards, protected demographic attributes including <b>Gender, Religion, Caste, Race, and Marital Status</b> are deliberately excluded from model training and feature sets. The underwriting assessment is strictly predicated on demonstrable financial solvency, debt-to-income sustainability, credit history, and asset parameters.
+      </p>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer class="main-footer">
+  <div>LoanLens · Machine Learning Loan Approval Intelligence · Aligned with UN SDG 8</div>
+</footer>
+
+<!-- Toast Notifications Container -->
+<div class="toast-container" id="toastContainer"></div>
+
+<!-- Scripts -->
+<script src="{{ url_for('static', filename='js/chart.umd.js') }}"></script>
+<script src="{{ url_for('static', filename='js/app.js') }}"></script>
+<script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+</body>
+</html>
